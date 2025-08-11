@@ -1,6 +1,6 @@
 /**
- * Updated by trungquandev.com's author on August 17 2023
- * YouTube: https://youtube.com/@trungquandev
+ * Updated by trunghieudev.com's author on August 17 2023
+ * YouTube: https://youtube.com/@trunghieudev
  * "A bit of fragrance clings to the hand that gives flowers!"
  * ---
  * Order an array of objects based on another array & return new Ordered Array
