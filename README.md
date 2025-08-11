@@ -1,4 +1,4 @@
-### Bộ code base để bắt đầu học khóa Full Stack MERN Pro (VIẾT CÁC REST API CHUẨN CHỈNH) - Lập Trình qua dự án thực tế Trello Clone trên kênh YouTube TrungQuanDev của mình nhé các bạn!
+### Bộ code base để bắt đầu học khóa Full Stack MERN Pro (VIẾT CÁC REST API CHUẨN CHỈNH) - Lập Trình qua dự án thực tế Trello Clone trên kênh YouTube trunghieudev của mình nhé các bạn!
 ### Base project for my Full Stack MERN Pro Course - Build Trello App on YouTube!
 
 - Playlist khóa Pro: https://www.youtube.com/playlist?list=PLP6tw4Zpj-RJP2-YrhtkWqObMQ-AA4TDy
@@ -19,7 +19,7 @@
 
 👉 Link bài viết: 👇
 
-🌐 https://trungquandev.com/khoa-hoc-lap-trinh-full-stack-mern-100-du-an-thuc-te-chat-luong/
+🌐 https://trunghieudev.com/khoa-hoc-lap-trinh-full-stack-mern-100-du-an-thuc-te-chat-luong/
 
 **🥉 FREE PACK (No Sponsor)**
 
@@ -41,7 +41,7 @@
 
 **🏆 HOẶC NẾU BẠN KHÔNG CÓ THẺ VISA THANH TOÁN QUỐC TẾ THÌ CÓ THỂ LIÊN HỆ TRỰC TIẾP VỚI MÌNH TẠI ĐÂY ĐỂ LẤY TÀI NGUYÊN HỌC TẬP NHÉ 👇**
 
-**🌐 Facebook TrungQuanDev: 👉 https://facebook.com/trungquandev**
+**🌐 Facebook trunghieudev: 👉 https://facebook.com/trunghieudev**
 
 **👑 Lưu ý: Video hướng dẫn chi tiết cách Install Source Code (Pro & Advanced) đều đã có trong 2 Playlists của khóa học rồi nhé.**
 
@@ -70,13 +70,13 @@
 
 ### About Me - Thông tin về mình:
 
-Author: **Trungquandev - Một Lập Trình Viên** && **CodeTQ - ASMR Programming**
+Author: **trunghieudev - Một Lập Trình Viên** && **CodeTQ - ASMR Programming**
 
-Blog: https://trungquandev.com/
+Blog: https://trunghieudev.com/
 
-CV: https://cv.trungquandev.com/
+CV: https://cv.trunghieudev.com/
 
-YouTube 01 (Trungquandev - Một Lập Trình Viên): https://www.youtube.com/@trungquandev
+YouTube 01 (trunghieudev - Một Lập Trình Viên): https://www.youtube.com/@trunghieudev
 
 YouTube 02 (CodeTQ - ASMR Programming): https://www.youtube.com/@code-tq
 
