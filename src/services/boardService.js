@@ -1,17 +1,24 @@
 import { slugify } from "~/utils/formatter"
+import { boardModel } from "~/models/boardModel"
+
 const createNew = async (reqBody) => {
     try {
     const newBoard = {
         ...reqBody,
         slug: slugify(reqBody.title),
     }
-        return newBoard
+        const createBoard =  await boardModel.createNew(newBoard)
+        console.log(createBoard)
+        const getNewBoard = await boardModel.getById(createBoard.insertedId)
+        console.log(getNewBoard)
+
+        return getNewBoard
     }
     catch (error) {
         throw new Error(error)
     }
 }
-//commit test
-//commit test 2
-//commit test 3
-export const boardService = { createNew }
+
+export const boardService = {
+    createNew,
+}
