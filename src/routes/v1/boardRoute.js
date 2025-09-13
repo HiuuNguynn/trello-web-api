@@ -6,9 +6,7 @@ import { boardController } from '~/controllers/boardController'
 const Router = express.Router()
 
 Router.route('/')
-    .get((req, res) => {
-        res.status(StatusCodes.OK).json({ message: 'API get list boards ' })
-    })
+    .get(boardController.getAll)
     .post(boardValidation.createNew, boardController.createNew )
 
 export const boardRoute = Router
