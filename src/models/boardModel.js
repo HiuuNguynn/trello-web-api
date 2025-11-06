@@ -17,15 +17,20 @@ const boardCollectionSchema = Joi.object({
 const createNew = async (data) => {
     return await GET_DB().collection(BOARD_COLLECTION_NAME).insertOne(data)
 }
-const getById = async (id) => {
-    return await GET_DB().collection(BOARD_COLLECTION_NAME).findOne({
-         _id: id
-    })
+
+// Query using aggregate
+const getDetails = async (id) => {
+    try {
+        const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOne({ _id: new ObjectId(id) })
+        return result
+    } catch (error) {
+        throw new Error(error)
+    }
 }
 
 export const boardModel = {
     BOARD_COLLECTION_NAME,
     boardCollectionSchema,
     createNew,
-    getById,
+    getDetails,
 }
