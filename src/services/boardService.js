@@ -2,6 +2,7 @@ import { slugify } from "~/utils/formatter"
 import { boardModel } from "~/models/boardModel"
 import ApiError from "~/utils/ApiError"
 import { StatusCodes } from "http-status-codes"
+import { cloneDeep } from "lodash"
 
 const createNew = async (reqBody) => {
     try {
@@ -10,9 +11,7 @@ const createNew = async (reqBody) => {
         slug: slugify(reqBody.title),
     }
         const createBoard =  await boardModel.createNew(newBoard)
-        console.log(createBoard)
         const getNewBoard = await boardModel.getDetails(createBoard.insertedId)
-        console.log(getNewBoard)
 
         return getNewBoard
     }
@@ -21,12 +20,21 @@ const createNew = async (reqBody) => {
     }
 }
 
-const getDetails = async (boadId) => {
-    const board = await boardModel.getDetails(boadId)
+const getDetails = async (boardId) => {
+    const board = await boardModel.getDetails(boardId)
     if (!board) {
         throw new ApiError(StatusCodes.NOT_FOUND, 'Board not found')
     }
-    return board
+
+    // Deep Clone board ra một cái mới để xử lý, không ảnh hưởng tới board ban đầu, tùy mục đích về sau mà có cần clone deep hay không
+    const resBoard = cloneDeep(board)
+    resBoard.columns.forEach(column => {
+        column.cards = resBoard.cards.filter(card => card.columnId.equals(column._id))
+    })
+
+    delete resBoard.cards
+
+    return resBoard
 }
 
 export const boardService = {
