@@ -1,25 +1,24 @@
-import { cardModel } from "~/models/cardModel"
-import { columnModel } from "~/models/columnModel"
+import { cardModel } from '~/models/cardModel'
+import { columnModel } from '~/models/columnModel'
 
-const createNew = async (reqBody) => {
-    try {
+const createNew = async reqBody => {
+  try {
     const newCard = {
-        ...reqBody,
+      ...reqBody
     }
-        const createCard = await cardModel.createNew(newCard)
-        const getNewCard = await cardModel.findOneById(createCard.insertedId)
+    const createCard = await cardModel.createNew(newCard)
+    const getNewCard = await cardModel.findOneById(createCard.insertedId)
 
-        if (getNewCard) {
-            await columnModel.pushCardOrderIds(getNewCard)
-        }
+    if (getNewCard) {
+      await columnModel.pushCardOrderIds(getNewCard)
+    }
 
-        return getNewCard
-    }
-    catch (error) {
-        throw new Error(error)
-    }
+    return getNewCard
+  } catch (error) {
+    throw new Error(error)
+  }
 }
 
 export const cardService = {
-    createNew,
+  createNew
 }

@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔧 Formatting code before push..."
+npm run format
+
+echo "🔍 Linting code before push..."
+npm run lint
+
+echo "✅ Code formatted and linted successfully!"

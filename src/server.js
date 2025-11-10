@@ -8,9 +8,8 @@ import { env } from '~/config/environment'
 import { APIs_V1 } from '~/routes/v1'
 import { errorHandlingMiddleware } from '~/middlewares/errorHandlingMiddleware'
 const START_SERVER = () => {
-
   const app = express()
-  
+
   // Apply CORS middleware
   app.use(cors(corsOptions))
 
@@ -21,9 +20,10 @@ const START_SERVER = () => {
   // Middleware xử lý lỗi tập trung và phải theo thứ tự "err, req, res, next"
   app.use(errorHandlingMiddleware)
 
-
   app.listen(env.APP_PORT, env.APP_HOST, () => {
-    console.log(`Hello ${env.AUTHOR}, I am running at Host ${ env.APP_HOST } and Port ${ env.APP_PORT }`)
+    console.log(
+      `Hello ${env.AUTHOR}, I am running at Host ${env.APP_HOST} and Port ${env.APP_PORT}`
+    )
   })
   exitHook(() => {
     console.log('Server is shutting down...')
@@ -32,8 +32,7 @@ const START_SERVER = () => {
   })
 }
 
-
-(async () => {
+;(async () => {
   try {
     console.log('Connecting to MongoDB Atlas...')
     await CONNECT_DB()
