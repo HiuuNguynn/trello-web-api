@@ -42,9 +42,19 @@ const createNew = async data => {
   }
 }
 
+const deleteMany = async columnId => {
+  try {
+    return await GET_DB()
+      .collection(CARD_COLLECTION_NAME)
+      .deleteMany({ columnId: new ObjectId(columnId) })
+  } catch (error) {
+    throw new Error(error)
+  }
+}
 export const cardModel = {
   CARD_COLLECTION_NAME,
   CARD_COLLECTION_SCHEMA,
   createNew,
-  findOneById
+  findOneById,
+  deleteMany
 }
