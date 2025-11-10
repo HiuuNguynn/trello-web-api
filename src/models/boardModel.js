@@ -12,11 +12,13 @@ const BOARD_COLLECTION_SCHEMA = Joi.object({
     slug: Joi.string().required().min(3).trim().strict(),
     description: Joi.string().required().min(3).max(256).trim().strict(),
     type: Joi.string().valid(BOARD_TYPES.PUBLIC, BOARD_TYPES.PRIVATE).required(),
-    columnOrderIds: Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE)).default([]),
+    // columnOrderIds: Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE)).default([]),
     createdAt: Joi.date().timestamp('javascript').default(Date.now()),
     updatedAt: Joi.date().timestamp('javascript').default(null),
     _destroy: Joi.boolean().default(false)
 })
+
+const INVALID_UPDATE_FIELDS = ['_id', 'createdAt']
 
 const validateBeforeCreate = async (data) => {
     return await BOARD_COLLECTION_SCHEMA.validateAsync(data, {abortEarly: false})
@@ -27,6 +29,23 @@ const createNew = async (data) => {
         const validated = await validateBeforeCreate(data)
         const result = await GET_DB().collection(BOARD_COLLECTION_NAME).insertOne(validated)
         return result
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+const update = async (boardId, updateData) => {
+    try {
+        Object.keys(updateData).forEach(fieldName => {
+            if (INVALID_UPDATE_FIELDS.includes(fieldName)) {
+                delete updateData[fieldName]
+            }
+        })
+        return await GET_DB().collection(BOARD_COLLECTION_NAME).findOneAndUpdate(
+            { _id: new ObjectId(boardId) },
+            { $set: updateData },
+            { returnDocument: 'after' }
+        )
     } catch (error) {
         throw new Error(error)
     }
@@ -73,7 +92,7 @@ const pushColumnOrderIds = async (column) => {
             {
                 returnDocument: 'after'
             }
-        ).value
+        )
     } catch (error) {
         throw new Error(error)
     }
@@ -84,5 +103,6 @@ export const boardModel = {
     BOARD_COLLECTION_SCHEMA,
     createNew,
     getDetails,
-    pushColumnOrderIds
+    pushColumnOrderIds,
+    update
 }
