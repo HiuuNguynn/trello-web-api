@@ -17,24 +17,28 @@ const CARD_COLLECTION_SCHEMA = Joi.object({
   _destroy: Joi.boolean().default(false)
 })
 
-const validateBeforeCreate = async (data) => {
-  return await CARD_COLLECTION_SCHEMA.validateAsync(data, {abortEarly: false})
+const validateBeforeCreate = async data => {
+  return await CARD_COLLECTION_SCHEMA.validateAsync(data, { abortEarly: false })
 }
 
-const findOneById = async (id) => {
-  return await GET_DB().collection(CARD_COLLECTION_NAME).findOne({_id: new Object(id)})
+const findOneById = async id => {
+  return await GET_DB()
+    .collection(CARD_COLLECTION_NAME)
+    .findOne({ _id: new Object(id) })
 }
 
-const createNew = async (data) => {
+const createNew = async data => {
   try {
     const validData = await validateBeforeCreate(data)
-    return await GET_DB().collection(CARD_COLLECTION_NAME).insertOne({
-      ...validData,
-      boardId: new ObjectId(validData.boardId),
-      columnId: new ObjectId(validData.columnId),
-    })
+    return await GET_DB()
+      .collection(CARD_COLLECTION_NAME)
+      .insertOne({
+        ...validData,
+        boardId: new ObjectId(validData.boardId),
+        columnId: new ObjectId(validData.columnId)
+      })
   } catch (error) {
-      throw new Error(error)
+    throw new Error(error)
   }
 }
 

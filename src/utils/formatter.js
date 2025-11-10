@@ -1,7 +1,7 @@
 /**
  * Simple method to Convert a String to Slug
  */
-const slugify = (val) => {
+const slugify = val => {
   if (!val) return ''
   return String(val)
     .normalize('NFKD') // split accented characters into their base characters and diacritical marks

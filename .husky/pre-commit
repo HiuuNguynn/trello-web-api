@@ -1,0 +1,2 @@
+# Pre-commit hook - chỉ lint nhanh, không format
+# Format sẽ chạy ở pre-push hook

@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import express from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { boardRoute } from '~/routes/v1/boardRoute'
@@ -7,7 +6,7 @@ import { cardRoute } from '~/routes/v1/cardRoute'
 const Router = express.Router()
 
 Router.get('/status', (req, res) => {
-    res.status(StatusCodes.OK).json({ message: 'API is running' })
+  res.status(StatusCodes.OK).json({ message: 'API is running' })
 })
 
 /** Boards APIs */
