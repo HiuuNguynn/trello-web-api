@@ -26,3 +26,7 @@ export const GET_DB = () => {
   }
   return trelloDatabaseInstance
 }
+
+export const GET_CLIENT = () => {
+  return mongoClientInstance
+}

@@ -1,5 +1,6 @@
 import Joi from 'joi'
 import { ObjectId } from 'mongodb'
+import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from '~/utils/validators'
 import { GET_DB } from '~/config/mongodb'
 import { BOARD_TYPES } from '~/utils/constants'
 import { columnModel } from '~/models/columnModel'
@@ -11,7 +12,9 @@ const BOARD_COLLECTION_SCHEMA = Joi.object({
   slug: Joi.string().required().min(3).trim().strict(),
   description: Joi.string().required().min(3).max(256).trim().strict(),
   type: Joi.string().valid(BOARD_TYPES.PUBLIC, BOARD_TYPES.PRIVATE).required(),
-  // columnOrderIds: Joi.array().items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE)).default([]),
+  columnOrderIds: Joi.array()
+    .items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
+    .default([]),
   createdAt: Joi.date().timestamp('javascript').default(Date.now()),
   updatedAt: Joi.date().timestamp('javascript').default(null),
   _destroy: Joi.boolean().default(false)
@@ -24,69 +27,56 @@ const validateBeforeCreate = async data => {
 }
 
 const createNew = async data => {
-  try {
-    const validated = await validateBeforeCreate(data)
-    const result = await GET_DB().collection(BOARD_COLLECTION_NAME).insertOne(validated)
-    return result
-  } catch (error) {
-    throw new Error(error)
-  }
+  return await GET_DB()
+    .collection(BOARD_COLLECTION_NAME)
+    .insertOne(await validateBeforeCreate(data))
 }
 
 const update = async (boardId, updateData) => {
-  try {
-    Object.keys(updateData).forEach(fieldName => {
-      if (INVALID_UPDATE_FIELDS.includes(fieldName)) {
-        delete updateData[fieldName]
-      }
-    })
-    return await GET_DB()
-      .collection(BOARD_COLLECTION_NAME)
-      .findOneAndUpdate(
-        { _id: new ObjectId(boardId) },
-        { $set: updateData },
-        { returnDocument: 'after' }
-      )
-  } catch (error) {
-    throw new Error(error)
-  }
+  Object.keys(updateData).forEach(fieldName => {
+    if (INVALID_UPDATE_FIELDS.includes(fieldName)) {
+      delete updateData[fieldName]
+    }
+  })
+  return await GET_DB()
+    .collection(BOARD_COLLECTION_NAME)
+    .findOneAndUpdate(
+      { _id: new ObjectId(boardId) },
+      { $set: updateData },
+      { returnDocument: 'after' }
+    )
 }
 
 // Query using aggregate
 const getDetails = async id => {
-  try {
-    // const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOne({ _id: new ObjectId(id) })
-    const result = await GET_DB()
-      .collection(BOARD_COLLECTION_NAME)
-      .aggregate([
-        {
-          $match: {
-            _id: new ObjectId(id),
-            _destroy: false
-          }
-        },
-        {
-          $lookup: {
-            from: columnModel.COLUMN_COLLECTION_NAME,
-            localField: '_id',
-            foreignField: 'boardId',
-            as: 'columns'
-          }
-        },
-        {
-          $lookup: {
-            from: cardModel.CARD_COLLECTION_NAME,
-            localField: '_id',
-            foreignField: 'boardId',
-            as: 'cards'
-          }
+  const result = await GET_DB()
+    .collection(BOARD_COLLECTION_NAME)
+    .aggregate([
+      {
+        $match: {
+          _id: new ObjectId(id),
+          _destroy: false
         }
-      ])
-      .toArray()
-    return result[0] || {}
-  } catch (error) {
-    throw new Error(error)
-  }
+      },
+      {
+        $lookup: {
+          from: columnModel.COLUMN_COLLECTION_NAME,
+          localField: '_id',
+          foreignField: 'boardId',
+          as: 'columns'
+        }
+      },
+      {
+        $lookup: {
+          from: cardModel.CARD_COLLECTION_NAME,
+          localField: '_id',
+          foreignField: 'boardId',
+          as: 'cards'
+        }
+      }
+    ])
+    .toArray()
+  return result[0] || {}
 }
 
 const pushColumnOrderIds = async column => {
@@ -111,24 +101,20 @@ const pushColumnOrderIds = async column => {
 }
 
 const deleteColumnOrderIds = async column => {
-  try {
-    return await GET_DB()
-      .collection(BOARD_COLLECTION_NAME)
-      .findOneAndUpdate(
-        {
-          _id: new ObjectId(column.boardId),
-          _destroy: false
-        },
-        {
-          $pull: { columnOrderIds: new ObjectId(column._id) }
-        },
-        {
-          returnDocument: 'after'
-        }
-      )
-  } catch (error) {
-    throw new Error(error)
-  }
+  return await GET_DB()
+    .collection(BOARD_COLLECTION_NAME)
+    .findOneAndUpdate(
+      {
+        _id: new ObjectId(column.boardId),
+        _destroy: false
+      },
+      {
+        $pull: { columnOrderIds: new ObjectId(column._id) }
+      },
+      {
+        returnDocument: 'after'
+      }
+    )
 }
 
 export const boardModel = {

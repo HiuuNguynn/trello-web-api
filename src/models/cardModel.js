@@ -24,32 +24,24 @@ const validateBeforeCreate = async data => {
 const findOneById = async id => {
   return await GET_DB()
     .collection(CARD_COLLECTION_NAME)
-    .findOne({ _id: new Object(id) })
+    .findOne({ _id: new ObjectId(id) })
 }
 
 const createNew = async data => {
-  try {
-    const validData = await validateBeforeCreate(data)
-    return await GET_DB()
-      .collection(CARD_COLLECTION_NAME)
-      .insertOne({
-        ...validData,
-        boardId: new ObjectId(validData.boardId),
-        columnId: new ObjectId(validData.columnId)
-      })
-  } catch (error) {
-    throw new Error(error)
-  }
+  const validData = await validateBeforeCreate(data)
+  return await GET_DB()
+    .collection(CARD_COLLECTION_NAME)
+    .insertOne({
+      ...validData,
+      boardId: new ObjectId(validData.boardId),
+      columnId: new ObjectId(validData.columnId)
+    })
 }
 
 const deleteMany = async columnId => {
-  try {
-    return await GET_DB()
-      .collection(CARD_COLLECTION_NAME)
-      .deleteMany({ columnId: new ObjectId(columnId) })
-  } catch (error) {
-    throw new Error(error)
-  }
+  return await GET_DB()
+    .collection(CARD_COLLECTION_NAME)
+    .deleteMany({ columnId: new ObjectId(columnId) })
 }
 export const cardModel = {
   CARD_COLLECTION_NAME,

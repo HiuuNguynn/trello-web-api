@@ -25,77 +25,57 @@ const validateBeforeCreate = async data => {
 }
 
 const findOneById = async columnId => {
-  try {
-    return await GET_DB()
-      .collection(COLUMN_COLLECTION_NAME)
-      .findOne({ _id: new ObjectId(columnId) })
-  } catch (error) {
-    throw new Error(error)
-  }
+  return await GET_DB()
+    .collection(COLUMN_COLLECTION_NAME)
+    .findOne({ _id: new ObjectId(columnId) })
 }
 
 const pushCardOrderIds = async card => {
-  try {
-    return await GET_DB()
-      .collection(COLUMN_COLLECTION_NAME)
-      .findOneAndUpdate(
-        {
-          _id: new ObjectId(card.columnId),
-          _destroy: false
-        },
-        {
-          $push: { cardOrderIds: new ObjectId(card._id) }
-        },
-        {
-          returnDocument: 'after'
-        }
-      )
-  } catch (error) {
-    throw new Error(error)
-  }
+  return await GET_DB()
+    .collection(COLUMN_COLLECTION_NAME)
+    .findOneAndUpdate(
+      {
+        _id: new ObjectId(card.columnId),
+        _destroy: false
+      },
+      {
+        $push: { cardOrderIds: new ObjectId(card._id) }
+      },
+      {
+        returnDocument: 'after'
+      }
+    )
 }
 
 const createNew = async data => {
-  try {
-    const validData = await validateBeforeCreate(data)
-    return await GET_DB()
-      .collection(COLUMN_COLLECTION_NAME)
-      .insertOne({
-        ...validData,
-        boardId: new ObjectId(validData.boardId)
-      })
-  } catch (error) {
-    throw new Error(error)
-  }
+  const validData = await validateBeforeCreate(data)
+  return await GET_DB()
+    .collection(COLUMN_COLLECTION_NAME)
+    .insertOne({
+      ...validData,
+      boardId: new ObjectId(validData.boardId)
+    })
 }
 
 const update = async (columnId, updateData) => {
-  try {
-    Object.keys(updateData).forEach(fieldName => {
-      if (INVALID_UPDATE_FIELDS.includes(fieldName)) {
-        delete updateData[fieldName]
-      }
-    })
-    return await GET_DB()
-      .collection(COLUMN_COLLECTION_NAME)
-      .findOneAndUpdate(
-        { _id: new ObjectId(columnId) },
-        { $set: updateData },
-        { returnDocument: 'after' }
-      )
-  } catch (error) {
-    throw new Error(error)
-  }
+  Object.keys(updateData).forEach(fieldName => {
+    if (INVALID_UPDATE_FIELDS.includes(fieldName)) {
+      delete updateData[fieldName]
+    }
+  })
+  return await GET_DB()
+    .collection(COLUMN_COLLECTION_NAME)
+    .findOneAndUpdate(
+      { _id: new ObjectId(columnId) },
+      { $set: updateData },
+      { returnDocument: 'after' }
+    )
 }
 
 const deleteItem = async columnId => {
-  try {
-    return await GET_DB()
-      .collection(COLUMN_COLLECTION_NAME)
-      .deleteOne({ _id: new ObjectId(columnId) })
-  } catch (error) {
-    throw new Error(error)
-  }
+  return await GET_DB()
+    .collection(COLUMN_COLLECTION_NAME)
+    .deleteOne({ _id: new ObjectId(columnId) })
 }
 
 export const columnModel = {
