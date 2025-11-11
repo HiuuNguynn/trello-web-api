@@ -3,38 +3,27 @@ import { boardModel } from '~/models/boardModel'
 import ApiError from '~/utils/ApiError'
 import { StatusCodes } from 'http-status-codes'
 import { cloneDeep } from 'lodash'
+import messages from '~/utils/messages'
+import { isEmpty } from 'lodash'
 
-const createNew = async reqBody => {
-  try {
-    const newBoard = {
-      ...reqBody,
-      slug: slugify(reqBody.title)
-    }
-    const createBoard = await boardModel.createNew(newBoard)
-    const getNewBoard = await boardModel.getDetails(createBoard.insertedId)
-
-    return getNewBoard
-  } catch (error) {
-    throw new Error(error)
-  }
+const createNew = async dataInput => {
+  await boardModel.createNew({
+    ...dataInput,
+    slug: slugify(dataInput.title)
+  })
 }
 
 const update = async (boardId, reqBody) => {
-  try {
-    const updateData = {
-      ...reqBody,
-      updatedAt: Date.now()
-    }
-    return await boardModel.update(boardId, updateData)
-  } catch (error) {
-    throw new Error(error)
-  }
+  await boardModel.update(boardId, {
+    ...reqBody,
+    updatedAt: Date.now()
+  })
 }
 
 const getDetails = async boardId => {
   const board = await boardModel.getDetails(boardId)
-  if (!board) {
-    throw new ApiError(StatusCodes.NOT_FOUND, 'Board not found')
+  if (isEmpty(board)) {
+    throw new ApiError(StatusCodes.NOT_FOUND, messages.error.board.not_found)
   }
 
   // Deep Clone board ra một cái mới để xử lý, không ảnh hưởng tới board ban đầu, tùy mục đích về sau mà có cần clone deep hay không

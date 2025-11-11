@@ -1,29 +1,22 @@
 import { StatusCodes } from 'http-status-codes'
 import { boardService } from '~/services/boardService'
+import Response from '~/utils/Response'
+import messages from '~/utils/messages'
 
-const createNew = async (req, res, next) => {
-  try {
-    const createdBoard = await boardService.createNew(req.body)
-    res.status(StatusCodes.OK).json(createdBoard)
-  } catch (error) {
-    next(error)
-  }
+const createNew = async (req, res) => {
+  await boardService.createNew(req.body)
+  return Response.success(res, StatusCodes.CREATED, messages.success.board.created)
 }
 
-const update = async (req, res, next) => {
-  try {
-    const updateBoard = await boardService.update(req.params.id, req.body)
-    res.status(StatusCodes.OK).json(updateBoard)
-  } catch (error) {
-    next(error)
-  }
+const update = async (req, res) => {
+  await boardService.update(req.params.id, req.body)
+  return Response.success(res, StatusCodes.OK, messages.success.board.updated)
 }
 
 const getDetails = async (req, res, next) => {
   try {
-    const boardId = req.params.id
-    const board = await boardService.getDetails(boardId)
-    return res.status(StatusCodes.OK).json(board)
+    const details = await boardService.getDetails(req.params.id)
+    return Response.success(res, StatusCodes.OK, messages.success.board.detail, details)
   } catch (error) {
     next(error)
   }
