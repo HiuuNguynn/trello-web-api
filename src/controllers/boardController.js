@@ -13,17 +13,19 @@ const update = async (req, res) => {
   return Response.success(res, StatusCodes.OK, messages.success.board.updated)
 }
 
-const getDetails = async (req, res, next) => {
-  try {
-    const details = await boardService.getDetails(req.params.id)
-    return Response.success(res, StatusCodes.OK, messages.success.board.detail, details)
-  } catch (error) {
-    next(error)
-  }
+const getDetails = async (req, res) => {
+  const details = await boardService.getDetails(req.params.id)
+  return Response.success(res, StatusCodes.OK, messages.success.board.detail, details)
+}
+
+const moveCardToDifferentColumn = async (req, res) => {
+  await boardService.moveCardToDifferentColumn(req.body)
+  return Response.success(res, StatusCodes.OK, messages.success.board.moved_card)
 }
 
 export const boardController = {
   createNew,
   getDetails,
-  update
+  update,
+  moveCardToDifferentColumn
 }
