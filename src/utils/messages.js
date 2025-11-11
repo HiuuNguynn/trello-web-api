@@ -9,7 +9,8 @@ export default {
       updated: 'Update board successfully.',
       deleted: 'Delete board successfully.',
       detail: 'Get board detail successfully.',
-      list: 'Get a list of boards successful.'
+      list: 'Get a list of boards successful.',
+      moved_card: 'Move card successfully.'
     },
     column: {
       created: 'Create column successfully.',

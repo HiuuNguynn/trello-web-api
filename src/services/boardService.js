@@ -1,10 +1,12 @@
 import { slugify } from '~/utils/formatter'
 import { boardModel } from '~/models/boardModel'
-import ApiError from '~/utils/ApiError'
+import { columnModel } from '~/models/columnModel'
+import { cardModel } from '~/models/cardModel'
 import { StatusCodes } from 'http-status-codes'
 import { cloneDeep } from 'lodash'
-import messages from '~/utils/messages'
 import { isEmpty } from 'lodash'
+import messages from '~/utils/messages'
+import ApiError from '~/utils/ApiError'
 
 const createNew = async dataInput => {
   await boardModel.createNew({
@@ -37,8 +39,25 @@ const getDetails = async boardId => {
   return resBoard
 }
 
+const moveCardToDifferentColumn = async dataInput => {
+  await columnModel.update(dataInput.prevColumnId, {
+    cardOrderIds: dataInput.prevCardOrderIds,
+    updatedAt: Date.now()
+  })
+
+  await columnModel.update(dataInput.nextColumnId, {
+    cardOrderIds: dataInput.nextCardOrderIds,
+    updatedAt: Date.now()
+  })
+
+  await cardModel.update(dataInput.currentCardId, {
+    columnId: dataInput.nextColumnId
+  })
+}
+
 export const boardService = {
   createNew,
   getDetails,
-  update
+  update,
+  moveCardToDifferentColumn
 }
