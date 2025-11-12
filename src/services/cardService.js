@@ -1,11 +1,10 @@
 import { cardModel } from '~/models/cardModel'
 import { columnModel } from '~/models/columnModel'
 
-const createNew = async reqBody => {
-  const newCard = {
-    ...reqBody
-  }
-  const createCard = await cardModel.createNew(newCard)
+const createNew = async dataInput => {
+  const createCard = await cardModel.createNew({
+    ...dataInput
+  })
   const getNewCard = await cardModel.findOneById(createCard.insertedId)
 
   if (getNewCard) {
@@ -15,6 +14,11 @@ const createNew = async reqBody => {
   return getNewCard
 }
 
+const updateById = async (cardId, dataInput) => {
+  await cardModel.update(cardId, dataInput)
+}
+
 export const cardService = {
-  createNew
+  createNew,
+  updateById
 }

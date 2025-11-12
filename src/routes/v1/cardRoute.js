@@ -6,4 +6,6 @@ const Router = express.Router()
 
 Router.route('/').post(cardValidation.createNew, cardController.createNew)
 
+Router.route('/:id').put(cardValidation.updateById, cardController.updateById)
+
 export const cardRoute = Router
