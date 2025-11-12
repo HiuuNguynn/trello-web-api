@@ -13,7 +13,6 @@ const updateById = async (req, res) => {
   return Response.success(res, StatusCodes.OK, messages.success.card.updated)
 }
 
-
 export const cardController = {
   createNew,
   updateById
