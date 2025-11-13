@@ -1,6 +1,5 @@
-/**
- * Simple method to Convert a String to Slug
- */
+import { pick } from 'lodash'
+
 const slugify = val => {
   if (!val) return ''
   return String(val)
@@ -11,6 +10,11 @@ const slugify = val => {
     .replace(/[^a-z0-9 -]/g, '') // remove non-alphanumeric characters
     .replace(/\s+/g, '-') // replace spaces with hyphens
     .replace(/-+/g, '-') // remove consecutive hyphens
+}
+
+export const pickUser = (user) => {
+  if (!user) return {}
+  return pick(user, ['_id', 'email', 'username', 'createdAt', 'updatedAt'])
 }
 
 export { slugify }
