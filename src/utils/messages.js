@@ -25,6 +25,11 @@ export default {
       deleted: 'Delete card successfully.',
       detail: 'Get card detail successfully.',
       list: 'Get a list of cards successful.'
+    },
+    auth: {
+      registered: 'Register successfully.',
+      logged_in: 'Login successfully.',
+      logged_out: 'Logout successfully.'
     }
   },
   error: {
@@ -77,6 +82,17 @@ export default {
       column_not_found: 'Column not found for this card.',
       column_id_required: 'Column ID is required for card.',
       board_not_found: 'Board not found for this card.'
+    },
+    auth: {
+      email_required: 'Email is required.',
+      password_required: 'Password is required.',
+      username_required: 'Username is required.',
+      email_invalid: 'Email is invalid.',
+      password_invalid: 'Password is invalid.',
+      username_invalid: 'Username is invalid.',
+      email_exists: 'Email already exists.',
+      username_exists: 'Username already exists.',
+      password_match: 'Password and confirm password do not match.'
     }
   }
 }

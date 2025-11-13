@@ -1,0 +1,26 @@
+import { StatusCodes } from 'http-status-codes'
+import { authService } from '~/services/auth/authService'
+import Response from '~/utils/Response'
+import messages from '~/utils/messages'
+import { asyncHandler } from '~/utils/asyncHandler'
+
+const register = asyncHandler(async (req, res) => {
+  await authService.register(req.body)
+  return Response.success(res, StatusCodes.CREATED, messages.success.auth.registered)
+})
+
+const login = asyncHandler(async (req, res) => {
+  const user = await authService.login(req.body)
+  return Response.success(res, StatusCodes.OK, messages.success.auth.logged_in, user)
+})
+
+const logout = asyncHandler(async (req, res) => {
+  await authService.logout(req.body)
+  return Response.success(res, StatusCodes.OK, messages.success.auth.logged_out)
+})
+
+export const authController = {
+  register,
+  login,
+  logout
+}
