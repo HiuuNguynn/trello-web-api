@@ -4,9 +4,8 @@
  * @param {Function} fn - Async function (controller handler)
  * @returns {Function} - Wrapped function với error handling
  */
-export const asyncHandler = (fn) => {
+export const asyncHandler = fn => {
   return (req, res, next) => {
     Promise.resolve(fn(req, res, next)).catch(next)
   }
 }
-

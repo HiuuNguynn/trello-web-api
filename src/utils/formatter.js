@@ -12,7 +12,7 @@ const slugify = val => {
     .replace(/-+/g, '-') // remove consecutive hyphens
 }
 
-export const pickUser = (user) => {
+export const pickUser = user => {
   if (!user) return {}
   return pick(user, ['_id', 'email', 'username', 'createdAt', 'updatedAt'])
 }

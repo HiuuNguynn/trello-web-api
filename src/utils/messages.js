@@ -82,7 +82,7 @@ export default {
       column_not_found: 'Column not found for this card.',
       column_id_required: 'Column ID is required for card.',
       board_not_found: 'Board not found for this card.'
-      },
+    },
     auth: {
       email_required: 'Email is required.',
       password_required: 'Password is required.',
@@ -92,7 +92,7 @@ export default {
       username_invalid: 'Username is invalid.',
       email_exists: 'Email already exists.',
       username_exists: 'Username already exists.',
-      password_match: 'Password and confirm password do not match.',
+      password_match: 'Password and confirm password do not match.'
     }
-  },
+  }
 }

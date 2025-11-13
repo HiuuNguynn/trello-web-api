@@ -12,5 +12,5 @@ export const env = {
   MONGODB_URI: process.env.MONGODB_URI,
   JWT_SECRET: process.env.JWT_SECRET,
   ACCESS_TOKEN_LIFE: process.env.ACCESS_TOKEN_LIFE,
-  REFRESH_TOKEN_LIFE: process.env.REFRESH_TOKEN_LIFE,
+  REFRESH_TOKEN_LIFE: process.env.REFRESH_TOKEN_LIFE
 }

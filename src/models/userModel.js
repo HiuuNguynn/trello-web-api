@@ -1,9 +1,13 @@
 import Joi from 'joi'
 import { GET_DB } from '~/config/mongodb'
 import { ObjectId } from 'mongodb'
-import { EMAIL_RULE, EMAIL_RULE_MESSAGE, PASSWORD_RULE, PASSWORD_RULE_MESSAGE } from '~/utils/validators'
+import {
+  EMAIL_RULE,
+  EMAIL_RULE_MESSAGE,
+  PASSWORD_RULE,
+  PASSWORD_RULE_MESSAGE
+} from '~/utils/validators'
 import bcryptjs from 'bcryptjs'
-
 
 // Define Collection (name & schema)
 const USER_COLLECTION_NAME = 'users'

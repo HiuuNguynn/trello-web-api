@@ -15,13 +15,15 @@ export const errorHandlingMiddleware = (err, req, res, _next) => {
   }
 
   const isDevelopment = env.BUILD_MODE === 'dev'
-  
+
   if (isDevelopment) {
     responseError.stack = err.stack
     // Log error to console in development for debugging
+    // eslint-disable-next-line no-console
     console.error('Error:', err)
   } else {
     // In production, log error to console but never include stack in response
+    // eslint-disable-next-line no-console
     console.error('Error:', {
       message: err.message,
       statusCode: err.statusCode,

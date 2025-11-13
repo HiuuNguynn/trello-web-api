@@ -16,19 +16,18 @@ const register = async dataInput => {
 
 const login = async dataInput => {
   const user = await userModel.findOneByEmail(dataInput.email)
-  
-  if (!user || !await bcryptjs.compare(dataInput.password, user.password)) {
+
+  if (!user || !(await bcryptjs.compare(dataInput.password, user.password))) {
     throw new ApiError(StatusCodes.BAD_REQUEST, messages.error.auth.email_or_password_incorrect)
   }
-  
+
   const payload = {
     userId: user._id,
-    email: user.email,
+    email: user.email
   }
-  console.log(env.ACCESS_TOKEN_LIFE, env.REFRESH_TOKEN_LIFE)
 
-  const accessToken = jwt.sign(payload, env.JWT_SECRET, { expiresIn: env.ACCESS_TOKEN_LIFE})
-  const refreshToken = jwt.sign(payload, env.JWT_SECRET, { expiresIn: env.REFRESH_TOKEN_LIFE})
+  const accessToken = jwt.sign(payload, env.JWT_SECRET, { expiresIn: env.ACCESS_TOKEN_LIFE })
+  const refreshToken = jwt.sign(payload, env.JWT_SECRET, { expiresIn: env.REFRESH_TOKEN_LIFE })
   return {
     accessToken,
     refreshToken,
