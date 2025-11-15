@@ -12,6 +12,7 @@ const BOARD_COLLECTION_SCHEMA = Joi.object({
   slug: Joi.string().required().min(3).trim().strict(),
   description: Joi.string().required().min(3).max(256).trim().strict(),
   type: Joi.string().valid(BOARD_TYPES.PUBLIC, BOARD_TYPES.PRIVATE).required(),
+  userId: Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE).required(),
   columnOrderIds: Joi.array()
     .items(Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE))
     .default([]),
@@ -27,9 +28,13 @@ const validateBeforeCreate = async data => {
 }
 
 const createNew = async data => {
+  const validData = await validateBeforeCreate(data)
   return await GET_DB()
     .collection(BOARD_COLLECTION_NAME)
-    .insertOne(await validateBeforeCreate(data))
+    .insertOne({
+      ...validData,
+      userId: new ObjectId(validData.userId)
+    })
 }
 
 const update = async (boardId, updateData) => {
@@ -48,13 +53,14 @@ const update = async (boardId, updateData) => {
 }
 
 // Query using aggregate
-const getDetails = async id => {
+const getDetails = async (boardId, userId) => {
   const result = await GET_DB()
     .collection(BOARD_COLLECTION_NAME)
     .aggregate([
       {
         $match: {
-          _id: new ObjectId(id),
+          _id: new ObjectId(boardId),
+          userId: new ObjectId(userId),
           _destroy: false
         }
       },
@@ -117,6 +123,17 @@ const deleteColumnOrderIds = async column => {
     )
 }
 
+const getAllByUserId = async userId => {
+  return await GET_DB()
+    .collection(BOARD_COLLECTION_NAME)
+    .find({
+      userId: new ObjectId(userId),
+      _destroy: false
+    })
+    .sort({ createdAt: -1 })
+    .toArray()
+}
+
 export const boardModel = {
   BOARD_COLLECTION_NAME,
   BOARD_COLLECTION_SCHEMA,
@@ -124,5 +141,6 @@ export const boardModel = {
   getDetails,
   pushColumnOrderIds,
   deleteColumnOrderIds,
-  update
+  update,
+  getAllByUserId
 }

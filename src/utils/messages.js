@@ -29,7 +29,8 @@ export default {
     auth: {
       registered: 'Register successfully.',
       logged_in: 'Login successfully.',
-      logged_out: 'Logout successfully.'
+      logged_out: 'Logout successfully.',
+      refreshed_token: 'Token refreshed successfully.'
     }
   },
   error: {
@@ -92,7 +93,10 @@ export default {
       username_invalid: 'Username is invalid.',
       email_exists: 'Email already exists.',
       username_exists: 'Username already exists.',
-      password_match: 'Password and confirm password do not match.'
+      password_match: 'Password and confirm password do not match.',
+      email_or_password_incorrect: 'Email or password is incorrect.',
+      invalid_token: 'Invalid or expired token.',
+      refresh_token_required: 'Refresh token is required.'
     }
   }
 }
