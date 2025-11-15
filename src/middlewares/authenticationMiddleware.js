@@ -23,10 +23,7 @@ const isAuthorized = async (req, res, next) => {
   }
 
   try {
-    const accessTokenDecoded = await JwtProvider.verifyToken(
-      clientAccessToken,
-      env.JWT_SECRET
-    )
+    const accessTokenDecoded = await JwtProvider.verifyToken(clientAccessToken, env.JWT_SECRET)
 
     req.jwtDecoded = accessTokenDecoded
 
