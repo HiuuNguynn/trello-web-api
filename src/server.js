@@ -23,6 +23,15 @@ const START_SERVER = () => {
   // Middleware xử lý lỗi tập trung và phải theo thứ tự "err, req, res, next"
   app.use(errorHandlingMiddleware)
 
+  if (env.BUILD_MODE === 'production') {
+    app.listen(process.env.PORT, () => {
+      console.log(`Hello ${env.AUTHOR}, I am running at Host localhost and Port ${env.PORT}`)
+    })
+  } else {
+    app.listen(env.APP_PORT, 'localhost', () => {
+      console.log(`Hello ${env.AUTHOR}, I am running at Host localhost and Port ${env.APP_PORT}`)
+    })
+  }
   app.listen(env.APP_PORT, env.APP_HOST, () => {
     console.log(
       `Hello ${env.AUTHOR}, I am running at Host ${env.APP_HOST} and Port ${env.APP_PORT}`
