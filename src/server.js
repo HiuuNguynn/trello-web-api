@@ -23,19 +23,17 @@ const START_SERVER = () => {
   // Middleware xử lý lỗi tập trung và phải theo thứ tự "err, req, res, next"
   app.use(errorHandlingMiddleware)
 
-  if (env.BUILD_MODE === 'production') {
-    app.listen(process.env.PORT, () => {
-      console.log(`Hello ${env.AUTHOR}, I am running at Host localhost and Port ${env.PORT}`)
-    })
-  } else {
-    app.listen(env.APP_PORT, 'localhost', () => {
-      console.log(`Hello ${env.AUTHOR}, I am running at Host localhost and Port ${env.APP_PORT}`)
-    })
-  }
-  app.listen(env.APP_PORT, env.APP_HOST, () => {
-    console.log(
-      `Hello ${env.AUTHOR}, I am running at Host ${env.APP_HOST} and Port ${env.APP_PORT}`
-    )
+  // Render và các platform khác thường cung cấp PORT qua environment variable
+  const PORT = process.env.PORT || env.APP_PORT || 8017
+  // Bind vào 0.0.0.0 để có thể truy cập từ bên ngoài (cần cho deployment)
+  // Trong production (Render), bind vào 0.0.0.0, trong dev bind vào localhost
+  const HOST =
+    env.BUILD_MODE === 'production' || process.env.NODE_ENV === 'production'
+      ? '0.0.0.0'
+      : env.APP_HOST || 'localhost'
+
+  app.listen(PORT, HOST, () => {
+    console.log(`Hello ${env.AUTHOR}, I am running at Host ${HOST} and Port ${PORT}`)
   })
   exitHook(() => {
     console.log('Server is shutting down...')
