@@ -15,7 +15,7 @@ const START_SERVER = () => {
   app.use(cors(corsOptions))
 
   app.use(express.json())
-  
+
   app.use(cookieParser())
 
   app.use('/v1', APIs_V1)

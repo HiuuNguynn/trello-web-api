@@ -12,7 +12,10 @@ Router.route('/:id')
   .get(authenticationMiddleware.isAuthorized, boardController.getDetails)
   .put(authenticationMiddleware.isAuthorized, boardValidation.update, boardController.update)
 
-Router.route('/supports/moving_card')
-  .put(authenticationMiddleware.isAuthorized, boardValidation.moveCardToDifferentColumn, boardController.moveCardToDifferentColumn)
+Router.route('/supports/moving_card').put(
+  authenticationMiddleware.isAuthorized,
+  boardValidation.moveCardToDifferentColumn,
+  boardController.moveCardToDifferentColumn
+)
 
 export const boardRoute = Router

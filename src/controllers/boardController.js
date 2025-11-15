@@ -9,55 +9,28 @@ const createNew = asyncHandler(async (req, res) => {
     ...req.body,
     userId: req.jwtDecoded._id
   })
-  return Response.success(
-    res,
-    StatusCodes.CREATED,
-    messages.success.board.created,
-    newBoard
-  )
+  return Response.success(res, StatusCodes.CREATED, messages.success.board.created, newBoard)
 })
 
 const update = asyncHandler(async (req, res) => {
   await boardService.update(req.params.id, req.body)
-  return Response.success(
-    res,
-    StatusCodes.OK,
-    messages.success.board.updated,
-    req.body
-  )
+  return Response.success(res, StatusCodes.OK, messages.success.board.updated, req.body)
 })
 
 const getDetails = asyncHandler(async (req, res) => {
-  const details = await boardService.getDetails(
-    req.params.id,
-    req.jwtDecoded._id
-  )
+  const details = await boardService.getDetails(req.params.id, req.jwtDecoded._id)
 
-  return Response.success(res,
-    StatusCodes.OK,
-    messages.success.board.detail,
-    details
-  )
+  return Response.success(res, StatusCodes.OK, messages.success.board.detail, details)
 })
 
 const moveCardToDifferentColumn = asyncHandler(async (req, res) => {
   await boardService.moveCardToDifferentColumn(req.body)
-  return Response.success(
-    res,
-    StatusCodes.OK,
-    messages.success.board.moved_card,
-    req.body
-  )
+  return Response.success(res, StatusCodes.OK, messages.success.board.moved_card, req.body)
 })
 
 const getAllByUserId = asyncHandler(async (req, res) => {
   const boards = await boardService.getAllByUserId(req.jwtDecoded._id)
-  return Response.success(
-    res,
-    StatusCodes.OK,
-    messages.success.board.list,
-    boards
-  )
+  return Response.success(res, StatusCodes.OK, messages.success.board.list, boards)
 })
 
 export const boardController = {
