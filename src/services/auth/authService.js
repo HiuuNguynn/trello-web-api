@@ -27,9 +27,17 @@ const login = async dataInput => {
     email: user.email
   }
 
-  const accessToken = await JwtProvider.generateToken(payload, env.JWT_SECRET, env.ACCESS_TOKEN_LIFE)
-  const refreshToken = await JwtProvider.generateToken(payload, env.JWT_SECRET, env.REFRESH_TOKEN_LIFE)
-  
+  const accessToken = await JwtProvider.generateToken(
+    payload,
+    env.JWT_SECRET,
+    env.ACCESS_TOKEN_LIFE
+  )
+  const refreshToken = await JwtProvider.generateToken(
+    payload,
+    env.JWT_SECRET,
+    env.REFRESH_TOKEN_LIFE
+  )
+
   return {
     accessToken,
     refreshToken,
@@ -47,7 +55,6 @@ const refreshToken = async clienRefreshToken => {
 
   return await JwtProvider.generateToken(payload, env.JWT_SECRET, env.ACCESS_TOKEN_LIFE)
 }
-
 
 export const authService = {
   register,
