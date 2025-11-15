@@ -3,9 +3,10 @@ import ApiError from '~/utils/ApiError'
 import messages from '~/utils/messages'
 import { userModel } from '~/models/userModel'
 import bcryptjs from 'bcryptjs'
-import jwt from 'jsonwebtoken'
 import { env } from '~/config/environment'
 import { pickUser } from '~/utils/formatter'
+import { JwtProvider } from '~/providers/JwtProvider'
+
 const register = async dataInput => {
   const existingUser = await userModel.findOneByEmail(dataInput.email)
   if (existingUser) {
@@ -22,12 +23,13 @@ const login = async dataInput => {
   }
 
   const payload = {
-    userId: user._id,
+    _id: user._id,
     email: user.email
   }
 
-  const accessToken = jwt.sign(payload, env.JWT_SECRET, { expiresIn: env.ACCESS_TOKEN_LIFE })
-  const refreshToken = jwt.sign(payload, env.JWT_SECRET, { expiresIn: env.REFRESH_TOKEN_LIFE })
+  const accessToken = await JwtProvider.generateToken(payload, env.JWT_SECRET, env.ACCESS_TOKEN_LIFE)
+  const refreshToken = await JwtProvider.generateToken(payload, env.JWT_SECRET, env.REFRESH_TOKEN_LIFE)
+  
   return {
     accessToken,
     refreshToken,
@@ -35,13 +37,20 @@ const login = async dataInput => {
   }
 }
 
-const logout = async _dataInput => {
-  // Logout logic will be implemented later if needed
-  return true
+const refreshToken = async clienRefreshToken => {
+  const decoded = await JwtProvider.verifyToken(clienRefreshToken, env.JWT_SECRET)
+
+  const payload = {
+    _id: decoded._id,
+    email: decoded.email
+  }
+
+  return await JwtProvider.generateToken(payload, env.JWT_SECRET, env.ACCESS_TOKEN_LIFE)
 }
+
 
 export const authService = {
   register,
   login,
-  logout
+  refreshToken
 }

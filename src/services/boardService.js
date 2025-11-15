@@ -9,7 +9,7 @@ import messages from '~/utils/messages'
 import ApiError from '~/utils/ApiError'
 
 const createNew = async dataInput => {
-  await boardModel.createNew({
+  return await boardModel.createNew({
     ...dataInput,
     slug: slugify(dataInput.title)
   })
@@ -22,8 +22,8 @@ const update = async (boardId, reqBody) => {
   })
 }
 
-const getDetails = async boardId => {
-  const board = await boardModel.getDetails(boardId)
+const getDetails = async (boardId, userId) => {
+  const board = await boardModel.getDetails(boardId, userId)
   if (isEmpty(board)) {
     throw new ApiError(StatusCodes.NOT_FOUND, messages.error.board.not_found)
   }
@@ -55,9 +55,14 @@ const moveCardToDifferentColumn = async dataInput => {
   })
 }
 
+const getAllByUserId = async userId => {
+  return await boardModel.getAllByUserId(userId)
+}
+
 export const boardService = {
   createNew,
   getDetails,
   update,
-  moveCardToDifferentColumn
+  moveCardToDifferentColumn,
+  getAllByUserId
 }
